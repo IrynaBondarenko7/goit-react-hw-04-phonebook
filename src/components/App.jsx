@@ -14,36 +14,20 @@ const initialContacts = [
 ];
 
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
-  // const [name, setName] = useState('');
+  const [contacts, setContacts] = useState(() => {
+    const savedContacts = localStorage.getItem('contacts');
+    if (savedContacts !== null) {
+      return JSON.parse(savedContacts);
+    } else {
+      return initialContacts;
+    }
+  });
+
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const savedContacts = localStorage.getItem('contacts');
-    if (savedContacts !== null) {
-      setContacts(JSON.parse(savedContacts));
-    } else {
-      setContacts(initialContacts);
-    }
-  }, []);
-  // useEffect(() => {
-  //   localStorage.setItem('contacts', JSON.stringify(contacts));
-  // }, [contacts]);
-
-  // componentDidMount() {
-  //   const savedContacts = localStorage.getItem('contacts');
-  //   if (savedContacts !== null) {
-  //     this.setState({ contacts: JSON.parse(savedContacts) });
-  //   } else {
-  //     this.setState({ contacts: initialContacts });
-  //   }
-  // }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevState.contacts !== this.state.contacts) {
-  //     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-  //   }
-  // }
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const addContact = value => {
     setContacts(prevState => {
